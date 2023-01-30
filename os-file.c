@@ -173,7 +173,7 @@ int create_node(const char *path, int size)
         exists(temp_path, &temp_dir);
 
         if ((strcmp(dst_dir, ".") != 0) && (strcmp(dst_dir, "..") != 0) && (temp_dir != NULL) &&
-                (!temp_dir->size) && (bin_search(temp_dir->children, temp_dir->children_amount, dst_dir) == -1))
+            (!temp_dir->size) && (bin_search(temp_dir->children, temp_dir->children_amount, dst_dir) == -1))
         {
             if (temp_dir->children_amount)
             {
