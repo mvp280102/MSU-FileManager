@@ -1,20 +1,20 @@
 #include "os-file.h"
 
-#include <cstring>
-#include <cstdio>
+#include <string.h>
+#include <stdio.h>
 
 
 // Структура, представляющая файл/директорию:
-struct Node
+typedef struct Node
 {
 	char name[33];                  // имя файла/директории
 	unsigned int size;              // размер (для файлов)
 
-	Node *parent;       	        // указатель на родительскую директорию
+	struct Node *parent;       	    // указатель на родительскую директорию
 
-	Node **children;    	        // массив указателей на дочерние директории или файлы (для директорий)
+	struct Node **children;    	    // массив указателей на дочерние директории или файлы (для директорий)
 	int children_amount;            // количество дочерних директорий или файлов (для директорий)
-};
+} Node;
 
 
 // Прочие переменные:
@@ -145,10 +145,11 @@ void exists(const char *path, Node **dst_dir)
 }
 
 // В зависимости от указанного размера создает файл или директорию:
-int create_node(const char *path, int size = 0)
+int create_node(const char *path, int size)
 {
 	Node *temp_dir;
-	int err_code = 1, req_pos, len = strlen(path);
+	int err_code = 1, req_pos;
+    unsigned int len = strlen(path);
 	unsigned int cur_pos = 0;
 	char *dst_dir = (char*)malloc(sizeof(char) * 33),
 			*temp_path = (char*)malloc(sizeof(char) * strlen(path));
@@ -299,7 +300,7 @@ int create_dir(const char *path)
 	int err_code;
 
 	if (created)
-		err_code = create_node(path);
+		err_code = create_node(path, 0);
 	else
 		err_code = 0;
 
@@ -323,7 +324,7 @@ int create_file(const char *path, int file_size)
 }
 
 // Удаляет директорию или файл с указанным именем:
-int remove(const char *path, int recursive)
+int remove_dir_file(const char *path, int recursive)
 {
 	Node *temp_dir, *temp_cur_dir = cur_dir;
 	int err_code = 1, req_pos;
@@ -364,11 +365,11 @@ int remove(const char *path, int recursive)
 				cur_dir = temp_dir;
 
 				for (int i = 0; i < temp_dir->children_amount; i++)
-					err_code = remove(temp_dir->children[i]->name, 1);
+					err_code = remove_dir_file(temp_dir->children[i]->name, 1);
 
 				cur_dir = temp_cur_dir;
 
-				err_code = remove(path, 0);
+				err_code = remove_dir_file(path, 0);
 			}
 			else
 				err_code = 0;
@@ -390,7 +391,7 @@ int destroy()
 		cur_dir = root_dir;
 
 		while (root_dir->children_amount)
-			err_code = remove(root_dir->children[0]->name, 1);
+			err_code = remove_dir_file(root_dir->children[0]->name, 1);
 
 		free(root_dir->children);
 		free(root_dir);
@@ -428,7 +429,8 @@ void get_cur_dir(char *dst)
 int list(const char *path, int dir_first)
 {
 	Node *temp_dir;
-	int err_code = 1, len = strlen(path);
+	int err_code = 1;
+    unsigned int len = strlen(path);
 	unsigned int cur_pos_before = 0, cur_pos_after = 0;
 	char *temp_path;
 
@@ -494,7 +496,7 @@ void setup_file_manager(file_manager_t *fm)
 	fm->destroy = destroy;
 	fm->create_dir = create_dir;
 	fm->create_file = create_file;
-	fm->remove = remove;
+	fm->remove = remove_dir_file;
 	fm->change_dir = change_dir;
 	fm->get_cur_dir = get_cur_dir;
 	fm->list = list;

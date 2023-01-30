@@ -1,6 +1,6 @@
 #include "os-file.h"
 
-#include <cstdio>
+#include <stdio.h>
 
 int main()
 {
@@ -35,10 +35,10 @@ int main()
 		printf("list(\"/\", 1) = %d\n", file_manager.list("/", 1));
 		printf("list(\"/home\", 1) = %d\n", file_manager.list("/home", 1));
 		printf("list(\"/ /home\", 1) = %d\n", file_manager.list("/ /home", 1));
-		printf("remove(\"/home/dir2/file22\", 0) = %d\n", file_manager.remove("/home/dir2/file22", 0));
-		printf("remove(\"/home/dir2/file21\", 0) = %d\n", file_manager.remove("/home/dir2/file21", 0));
+		printf("remove_dir_file(\"/home/dir2/file22\", 0) = %d\n", file_manager.remove("/home/dir2/file22", 0));
+		printf("remove_dir_file(\"/home/dir2/file21\", 0) = %d\n", file_manager.remove("/home/dir2/file21", 0));
 		printf("change_dir(\"/home/dir1\") = %d\n", file_manager.change_dir("/home/dir1"));
-		printf("remove(\"/home/dir1/di11\", 1) = %d\n\n", file_manager.remove("/home/dir1/dir11", 1));
+		printf("remove_dir_file(\"/home/dir1/di11\", 1) = %d\n\n", file_manager.remove("/home/dir1/dir11", 1));
 
 		file_manager.get_cur_dir(current_directory);
 		printf("Current directory = %s\n\n", current_directory);
@@ -48,8 +48,8 @@ int main()
 		file_manager.get_cur_dir(current_directory);
 		printf("Current directory = %s\n\n", current_directory);
 
-		printf("remove(\"/home/dir1\", 1) = %d\n", file_manager.remove("/home/dir1", 1));
-		printf("remove(\"/home/dir2\", 1) = %d\n\n", file_manager.remove("/home/dir2", 1));
+		printf("remove_dir_file(\"/home/dir1\", 1) = %d\n", file_manager.remove("/home/dir1", 1));
+		printf("remove_dir_file(\"/home/dir2\", 1) = %d\n\n", file_manager.remove("/home/dir2", 1));
 
 		file_manager.get_cur_dir(current_directory);
 		printf("Current directory = %s\n\n", current_directory);
@@ -59,7 +59,7 @@ int main()
 		file_manager.get_cur_dir(current_directory);
 		printf("Current directory = %s\n\n", current_directory);
 
-		printf("remove(\"/home\", 1) = %d\n", file_manager.remove("/home", 1));
+		printf("remove_dir_file(\"/home\", 1) = %d\n", file_manager.remove("/home", 1));
 		printf("destroy() = %d\n\n", file_manager.destroy());
 	}
 	else
