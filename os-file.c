@@ -24,7 +24,7 @@ Node *root_dir = NULL;              // указатель на корневую 
 Node *cur_dir = NULL;               // указатель на текущую директорию
 
 
-// Вспомогательные функции:
+//// ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ:
 
 // Выделяет из строки подстроку от заданной позиции до указанного разделителя:
 void split(const char *path, char *result, unsigned int *pos, const char divider)
@@ -261,7 +261,7 @@ void get_cur_path(Node *dir, char *dst)
 }
 
 
-// Основные функции:
+// ОСНОВНЫЕ ФУНКЦИИ:
 
 // Создает файловый менеджер:
 int create(int disk_size)
